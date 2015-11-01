@@ -141,7 +141,7 @@ int board_eth_init(bd_t *bis)
 {
 	imx_iomux_v3_setup_multiple_pads(fec1_pads, ARRAY_SIZE(fec1_pads));
 	setup_fec();
-
+	udelay(500);
 	return cpu_eth_init(bis);
 }
 
