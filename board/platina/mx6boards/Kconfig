@@ -1,0 +1,12 @@
+if TARGET_PLATINAMX6BOARDS
+
+config SYS_BOARD
+	default "mx6boards"
+
+config SYS_VENDOR
+	default "platina"
+
+config SYS_CONFIG_NAME
+	default "platinamx6boards"
+
+endif
