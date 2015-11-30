@@ -62,7 +62,6 @@ DECLARE_GLOBAL_DATA_PTR;
 int dram_init(void)
 {
 	gd->ram_size = PHYS_SDRAM_SIZE;
-
 	return 0;
 }
 
@@ -98,21 +97,6 @@ static iomux_v3_cfg_t const fec1_pads[] = {
 	MX6_PAD_RGMII1_TXC__ENET1_RGMII_TXC | MUX_PAD_CTRL(ENET_PAD_CTRL),
 };
 
-static iomux_v3_cfg_t const peri_3v3_pads[] = {
-	MX6_PAD_QSPI1A_DATA0__GPIO4_IO_16 | MUX_PAD_CTRL(NO_PAD_CTRL),
-};
-
-static iomux_v3_cfg_t const phy_control_pads[] = {
-	/* 25MHz Ethernet PHY Clock */
-	MX6_PAD_ENET2_RX_CLK__ENET2_REF_CLK_25M | MUX_PAD_CTRL(ENET_CLK_PAD_CTRL),
-
-	/* ENET PHY Power */
-	MX6_PAD_ENET2_COL__GPIO2_IO_6 | MUX_PAD_CTRL(NO_PAD_CTRL),
-
-	/* AR8031 PHY Reset */
-	MX6_PAD_ENET2_CRS__GPIO2_IO_7 | MUX_PAD_CTRL(NO_PAD_CTRL),
-};
-
 static void setup_iomux_uart(void)
 {
 	imx_iomux_v3_setup_multiple_pads(uart1_pads, ARRAY_SIZE(uart1_pads));
@@ -126,17 +110,6 @@ static int setup_fec(void)
 
 	/* Use 125MHz anatop loopback REF_CLK1 for ENET1 */
 	clrsetbits_le32(&iomuxc_regs->gpr[1], IOMUX_GPR1_FEC1_MASK, 0);
-
-	imx_iomux_v3_setup_multiple_pads(phy_control_pads,
-					 ARRAY_SIZE(phy_control_pads));
-
-	/* Enable the ENET power, active low */
-	gpio_direction_output(IMX_GPIO_NR(2, 6) , 0);
-
-	/* Reset AR8031 PHY */
-	gpio_direction_output(IMX_GPIO_NR(2, 7) , 0);
-	udelay(500);
-	gpio_set_value(IMX_GPIO_NR(2, 7), 1);
 
 	reg = readl(&anatop->pll_enet);
 	reg |= BM_ANADIG_PLL_ENET_REF_25M_ENABLE;
@@ -256,13 +229,6 @@ int board_phy_config(struct phy_device *phydev)
 int board_early_init_f(void)
 {
 	setup_iomux_uart();
-
-	/* Enable PERI_3V3, which is used by SD2, ENET, LVDS, BT */
-	imx_iomux_v3_setup_multiple_pads(peri_3v3_pads,
-					 ARRAY_SIZE(peri_3v3_pads));
-
-	/* Active high for ncp692 */
-	gpio_direction_output(IMX_GPIO_NR(4, 16) , 1);
 
 #ifdef CONFIG_USB_EHCI_MX6
 	setup_usb();
