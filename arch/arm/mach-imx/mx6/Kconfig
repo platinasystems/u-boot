@@ -410,6 +410,11 @@ config TARGET_LITEBOARD
 	select BOARD_LATE_INIT
 	select MX6UL_LITESOM
 
+config TARGET_PLATINAMX6BOARDS
+	bool "platinamx6boards"
+	select DM
+	select DM_THERMAL
+
 config TARGET_PLATINUM_PICON
 	bool "platinum-picon"
 	select SUPPORT_SPL
@@ -553,6 +558,7 @@ source "board/phytec/pcm058/Kconfig"
 source "board/phytec/pfla02/Kconfig"
 source "board/gateworks/gw_ventana/Kconfig"
 source "board/kosagi/novena/Kconfig"
+source "board/platina/mx6boards/Kconfig"
 source "board/samtec/vining_2000/Kconfig"
 source "board/liebherr/display5/Kconfig"
 source "board/liebherr/mccmon6/Kconfig"
