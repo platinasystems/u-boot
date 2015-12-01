@@ -94,7 +94,7 @@
 #define CONFIG_USB_MAX_CONTROLLER_COUNT 2
 #endif
 
-#define CONFIG_CMD_PCI
+#undef CONFIG_CMD_PCI
 #ifdef CONFIG_CMD_PCI
 #define CONFIG_PCI
 #define CONFIG_PCI_PNP
