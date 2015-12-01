@@ -315,6 +315,9 @@ int board_init(void)
 	setup_i2c(0, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info1);
 #endif
 
+	// Turn on LC_POWER_EN.  Eventually remove this.
+	// gpio_direction_output(IMX_GPIO_NR(4,0), 1);
+
 #ifdef CONFIG_FSL_QSPI
 	board_qspi_init();
 #endif
