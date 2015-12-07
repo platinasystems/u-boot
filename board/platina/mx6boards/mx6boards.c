@@ -316,7 +316,10 @@ int board_init(void)
 #endif
 
 	// Turn on LC_POWER_EN.  Eventually remove this.
-	// gpio_direction_output(IMX_GPIO_NR(4,0), 1);
+	gpio_direction_output(IMX_GPIO_NR(4,0), 1);
+	udelay(1000000);
+	gpio_direction_output(IMX_GPIO_NR(7,4), 1); /* unreset switch */
+	gpio_direction_output(IMX_GPIO_NR(7,5), 1); /* unreset phy */
 
 #ifdef CONFIG_FSL_QSPI
 	board_qspi_init();
