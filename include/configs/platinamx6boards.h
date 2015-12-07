@@ -81,7 +81,7 @@
 #define CONFIG_FEC_XCV_TYPE             RGMII
 #define CONFIG_ETHPRIME                 "FEC"
 
-#define CONFIG_CMD_USB
+#undef CONFIG_CMD_USB
 #ifdef CONFIG_CMD_USB
 #define CONFIG_USB_EHCI
 #define CONFIG_USB_EHCI_MX6
@@ -108,7 +108,28 @@
 
 #define CONFIG_CMD_TIME
 
-#define CONFIG_FSL_QSPI
+/*
+#define CONFIG_SYS_NO_FLASH
+#define CONFIG_CMD_SF
+#ifdef CONFIG_CMD_SF
+#define CONFIG_SPI_FLASH_MACRONIX
+#define CONFIG_MXC_SPI
+#define CONFIG_SF_DEFAULT_BUS           0
+#define CONFIG_SF_DEFAULT_CS            0
+#define CONFIG_SF_DEFAULT_SPEED         29000000
+#define CONFIG_SF_DEFAULT_MODE          SPI_MODE_0
+#endif
+*/
+/*
+#define CONFIG_MXS_SPI
+
+#if defined(CONFIG_SPI_FLASH)
+#define CONFIG_SPI_FLASH_MACRONIX
+#define CONFIG_CMD_SF
+#define CONFIG_SF_DEFAULT_SPEED 29000000
+#define CONFIG_SF_DEFAULT_MODE 0
+#endif
+*/
 
 #ifdef CONFIG_FSL_QSPI
 #define CONFIG_CMD_SF
