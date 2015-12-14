@@ -320,6 +320,7 @@ int board_init(void)
 	udelay(1000000);
 	gpio_direction_output(IMX_GPIO_NR(7,4), 1); /* unreset switch */
 	gpio_direction_output(IMX_GPIO_NR(7,5), 1); /* unreset phy */
+	gpio_direction_output(IMX_GPIO_NR(1,10), 0); /* place x86 in reset */
 
 #ifdef CONFIG_FSL_QSPI
 	board_qspi_init();
