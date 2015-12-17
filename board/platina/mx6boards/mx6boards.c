@@ -59,6 +59,9 @@ DECLARE_GLOBAL_DATA_PTR;
 	PAD_CTL_DSE_40ohm | PAD_CTL_HYS |			\
 	PAD_CTL_ODE)
 
+/* The PMIC on our board is located on i2c bus 2 (0-based) */
+#define I2C_PMIC 2
+
 int dram_init(void)
 {
 	gd->ram_size = PHYS_SDRAM_SIZE;
@@ -127,17 +130,21 @@ int board_eth_init(bd_t *bis)
 }
 
 #define PC MUX_PAD_CTRL(I2C_PAD_CTRL)
-/* I2C1 for PMIC */
+/*
+ * PMIC:
+ * REV 1 - I2C1 (1-based)
+ * REV 1A - I2C3 (1-based)
+*/
 static struct i2c_pads_info i2c_pad_info1 = {
 	.scl = {
-		.i2c_mode = MX6_PAD_GPIO1_IO00__I2C1_SCL | PC,
-		.gpio_mode = MX6_PAD_GPIO1_IO00__GPIO1_IO_0 | PC,
-		.gp = IMX_GPIO_NR(1, 0),
+		.i2c_mode = MX6_PAD_KEY_COL4__I2C3_SCL | PC,
+		.gpio_mode = MX6_PAD_KEY_COL4__GPIO2_IO_14 | PC,
+		.gp = IMX_GPIO_NR(2, 14),
 	},
 	.sda = {
-		.i2c_mode = MX6_PAD_GPIO1_IO01__I2C1_SDA | PC,
-		.gpio_mode = MX6_PAD_GPIO1_IO01__GPIO1_IO_1 | PC,
-		.gp = IMX_GPIO_NR(1, 1),
+		.i2c_mode = MX6_PAD_KEY_ROW4__I2C3_SDA | PC,
+		.gpio_mode = MX6_PAD_KEY_ROW4__GPIO2_IO_19 | PC,
+		.gp = IMX_GPIO_NR(2, 19),
 	},
 };
 
