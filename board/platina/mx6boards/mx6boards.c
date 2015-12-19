@@ -73,6 +73,11 @@ static iomux_v3_cfg_t const uart1_pads[] = {
 	MX6_PAD_GPIO1_IO05__UART1_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
 };
 
+static iomux_v3_cfg_t const uart2_pads[] = {
+	MX6_PAD_GPIO1_IO06__UART2_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
+	MX6_PAD_GPIO1_IO07__UART2_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
+};
+
 static iomux_v3_cfg_t const usdhc4_pads[] = {
 	MX6_PAD_SD4_CLK__USDHC4_CLK | MUX_PAD_CTRL(USDHC_PAD_CTRL),
 	MX6_PAD_SD4_CMD__USDHC4_CMD | MUX_PAD_CTRL(USDHC_PAD_CTRL),
@@ -103,6 +108,7 @@ static iomux_v3_cfg_t const fec1_pads[] = {
 static void setup_iomux_uart(void)
 {
 	imx_iomux_v3_setup_multiple_pads(uart1_pads, ARRAY_SIZE(uart1_pads));
+	imx_iomux_v3_setup_multiple_pads(uart2_pads, ARRAY_SIZE(uart2_pads));
 }
 
 static int setup_fec(void)
@@ -322,12 +328,14 @@ int board_init(void)
 	setup_i2c(0, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info1);
 #endif
 
+#ifndef CONFIG_PLATINA_MM
 	// Turn on LC_POWER_EN.  Eventually remove this.
 	gpio_direction_output(IMX_GPIO_NR(4,0), 1);
 	udelay(1000000);
 	gpio_direction_output(IMX_GPIO_NR(7,4), 1); /* unreset switch */
 	gpio_direction_output(IMX_GPIO_NR(7,5), 1); /* unreset phy */
 	gpio_direction_output(IMX_GPIO_NR(1,10), 0); /* place x86 in reset */
+#endif
 
 #ifdef CONFIG_FSL_QSPI
 	board_qspi_init();
