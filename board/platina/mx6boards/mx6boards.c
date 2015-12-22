@@ -59,8 +59,8 @@ DECLARE_GLOBAL_DATA_PTR;
 	PAD_CTL_DSE_40ohm | PAD_CTL_HYS |			\
 	PAD_CTL_ODE)
 
-#ifndef CONFIG_PLATINA_MM
-/* The PMIC on our board is located on i2c bus 2 (0-based) */
+#ifdef CONFIG_PLATINA_LC
+/* The PMIC on the LC board is located on i2c bus 2 (0-based) */
 #define I2C_PMIC 2
 #endif
 
@@ -109,7 +109,7 @@ static iomux_v3_cfg_t const fec1_pads[] = {
 
 static void setup_iomux_uart(void)
 {
-#ifndef CONFIG_PLATINA_MM /* LC */
+#ifdef CONFIG_PLATINA_LC
 	imx_iomux_v3_setup_multiple_pads(uart1_pads, ARRAY_SIZE(uart1_pads));
 #else /* MM */
 	imx_iomux_v3_setup_multiple_pads(uart2_pads, ARRAY_SIZE(uart2_pads));
@@ -142,26 +142,44 @@ int board_eth_init(bd_t *bis)
 
 #define PC MUX_PAD_CTRL(I2C_PAD_CTRL)
 
-#ifdef CONFIG_PLATINA_MM
+/* i2c Bus 1 (1-based) info */
 static struct i2c_pads_info i2c_pad_info1 = {
-  .scl = {
-                   .i2c_mode = MX6_PAD_GPIO1_IO00__I2C1_SCL | PC,
-                   .gpio_mode = MX6_PAD_GPIO1_IO00__GPIO1_IO_0 | PC,
-                   .gp = IMX_GPIO_NR(1, 0),
-  },
-  .sda = {
-                   .i2c_mode = MX6_PAD_GPIO1_IO01__I2C1_SDA | PC,
-                   .gpio_mode = MX6_PAD_GPIO1_IO01__GPIO1_IO_1 | PC,
-                   .gp = IMX_GPIO_NR(1, 1),
-  },
+	.scl = {
+		.i2c_mode = MX6_PAD_GPIO1_IO00__I2C1_SCL | PC,
+		.gpio_mode = MX6_PAD_GPIO1_IO00__GPIO1_IO_0 | PC,
+		.gp = IMX_GPIO_NR(1, 0),
+	},
+	.sda = {
+		.i2c_mode = MX6_PAD_GPIO1_IO01__I2C1_SDA | PC,
+		.gpio_mode = MX6_PAD_GPIO1_IO01__GPIO1_IO_1 | PC,
+		.gp = IMX_GPIO_NR(1, 1),
+	},
 };
-#else /* LC */
+
+#ifdef CONFIG_PLATINA_MM
+/* i2c Bus 2 (1-based) info */
+static struct i2c_pads_info i2c_pad_info2 = {
+	.scl = {
+		.i2c_mode = MX6_PAD_GPIO1_IO02__I2C2_SCL | PC,
+		.gpio_mode = MX6_PAD_GPIO1_IO02__GPIO1_IO_2 | PC,
+		.gp = IMX_GPIO_NR(1, 2),
+	},
+	.sda = {
+		.i2c_mode = MX6_PAD_GPIO1_IO03__I2C2_SDA | PC,
+		.gpio_mode = MX6_PAD_GPIO1_IO03__GPIO1_IO_3 | PC,
+		.gp = IMX_GPIO_NR(1, 3),
+	},
+};
+#endif
+
+#ifdef CONFIG_PLATINA_LC
 /*
- * PMIC:
- * REV 1 - I2C1 (1-based)
- * REV 1A - I2C3 (1-based)
-*/
-static struct i2c_pads_info i2c_pad_info1 = {
+ * i2c Bus 3 info
+ *   PMIC:
+ *	REV 1 - I2C Bus 1 (1-based)
+ *	REV 1A - I2C Bus 3 (1-based)
+ */
+static struct i2c_pads_info i2c_pad_info3 = {
 	.scl = {
 		.i2c_mode = MX6_PAD_KEY_COL4__I2C3_SCL | PC,
 		.gpio_mode = MX6_PAD_KEY_COL4__GPIO2_IO_14 | PC,
@@ -346,10 +364,21 @@ int board_init(void)
 	gd->bd->bi_boot_params = PHYS_SDRAM + 0x100;
 
 #ifdef CONFIG_SYS_I2C_MXC
+	/* i2c Bus 1 initiazation */
 	setup_i2c(0, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info1);
+
+#ifdef CONFIG_PLATINA_MM
+	/* i2c Bus 2 initiazation */
+	setup_i2c(1, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info2);
 #endif
 
-#ifndef CONFIG_PLATINA_MM
+#ifdef CONFIG_PLATINA_LC
+	/* i2c Bus 3 initiazation */
+	setup_i2c(2, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info3);
+#endif
+#endif
+
+#ifdef CONFIG_PLATINA_LC
 	// Turn on LC_POWER_EN.  Eventually remove this.
 	gpio_direction_output(IMX_GPIO_NR(4,0), 1);
 	udelay(1000000);
