@@ -536,8 +536,13 @@ static int fec_open(struct eth_device *edev)
 #elif CONFIG_FEC_FIXED_SPEED
 	speed = CONFIG_FEC_FIXED_SPEED;
 #else
+#if defined(CONFIG_TARGET_PLATINAMX6BOARDS)
+	/* RGMII mac-2-mac connection; 1G speed, no auto-neg */
+	speed = 1000;
+#else
 	miiphy_wait_aneg(edev);
 	speed = miiphy_speed(edev->name, fec->phy_id);
+#endif
 	miiphy_duplex(edev->name, fec->phy_id);
 #endif
 
