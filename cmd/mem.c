@@ -743,7 +743,7 @@ static ulong mem_test_alt(vu_long *buf, ulong start_addr, ulong end_addr,
 	/*
 	 * Fill memory with a known pattern.
 	 */
-	for (pattern = 1, offset = 0; offset < num_words; pattern++, offset++) {
+	for (pattern = 0x5a5a0f0f, offset = 0; offset < num_words; pattern++, offset++) {
 		WATCHDOG_RESET();
 		addr[offset] = pattern;
 	}
@@ -751,7 +751,7 @@ static ulong mem_test_alt(vu_long *buf, ulong start_addr, ulong end_addr,
 	/*
 	 * Check each location and invert it for the second pass.
 	 */
-	for (pattern = 1, offset = 0; offset < num_words; pattern++, offset++) {
+	for (pattern = 0x5a5a0f0f, offset = 0; offset < num_words; pattern++, offset++) {
 		WATCHDOG_RESET();
 		temp = addr[offset];
 		if (temp != pattern) {
@@ -771,7 +771,7 @@ static ulong mem_test_alt(vu_long *buf, ulong start_addr, ulong end_addr,
 	/*
 	 * Check each location for the inverted pattern and zero it.
 	 */
-	for (pattern = 1, offset = 0; offset < num_words; pattern++, offset++) {
+	for (pattern = 0x5a5a0f0f, offset = 0; offset < num_words; pattern++, offset++) {
 		WATCHDOG_RESET();
 		anti_pattern = ~pattern;
 		temp = addr[offset];
