@@ -31,6 +31,8 @@
 #define CONFIG_BOOTCOMMAND
 
 /* Miscellaneous configurable options */
+#define CONFIG_CMD_MEMTEST
+#define CONFIG_SYS_ALT_MEMTEST
 #define CONFIG_SYS_MEMTEST_START	0x80000000
 #define CONFIG_SYS_MEMTEST_END		(CONFIG_SYS_MEMTEST_START + 0x10000)
 
@@ -54,8 +56,6 @@
 #define CONFIG_SYS_FSL_ESDHC_ADDR	USDHC4_BASE_ADDR
 
 /* I2C Configs */
-#define CONFIG_CMD_MEMTEST
-#define CONFIG_SYS_ALT_MEMTEST
 #define CONFIG_CMD_I2C
 #define CONFIG_SYS_I2C
 #define CONFIG_SYS_I2C_MXC
@@ -83,7 +83,8 @@
 #define CONFIG_FEC_XCV_TYPE             RGMII
 #define CONFIG_ETHPRIME                 "FEC"
 
-#undef CONFIG_CMD_USB
+/* USB Configs */
+#define CONFIG_CMD_USB
 #ifdef CONFIG_CMD_USB
 #define CONFIG_USB_EHCI
 #define CONFIG_USB_EHCI_MX6
@@ -110,43 +111,54 @@
 
 #define CONFIG_CMD_TIME
 
-/*
-#define CONFIG_SYS_NO_FLASH
-#define CONFIG_CMD_SF
-#ifdef CONFIG_CMD_SF
-#define CONFIG_SPI_FLASH_MACRONIX
-#define CONFIG_MXC_SPI
-#define CONFIG_SF_DEFAULT_BUS           0
-#define CONFIG_SF_DEFAULT_CS            0
-#define CONFIG_SF_DEFAULT_SPEED         29000000
-#define CONFIG_SF_DEFAULT_MODE          SPI_MODE_0
-#endif
-*/
-/*
-#define CONFIG_MXS_SPI
 
-#if defined(CONFIG_SPI_FLASH)
-#define CONFIG_SPI_FLASH_MACRONIX
-#define CONFIG_CMD_SF
-#define CONFIG_SF_DEFAULT_SPEED 29000000
-#define CONFIG_SF_DEFAULT_MODE 0
+
+#define CONFIG_ENV_SIZE                 SZ_8K
+
+
+/* QSPI or MMC */
+#ifdef CONFIG_SYS_BOOT_QSPI
+#define CONFIG_ENV_IS_IN_SPI_FLASH
+#else
+#define CONFIG_ENV_IS_IN_MMC
 #endif
-*/
+
+
+/* adding SF commands */
+#define CONFIG_FSL_QSPI
+
 
 #ifdef CONFIG_FSL_QSPI
 #define CONFIG_CMD_SF
-#define CONFIG_SPI_FLASH_MACRONIX
+#define CONFIG_SPI_FLASH_SPANSION
+#define CONFIG_SPI_FLASH_STMICRO
+#define CONFIG_SF_DEFAULT_BUS           0
+#define CONFIG_SF_DEFAULT_CS            0
+#define CONFIG_SF_DEFAULT_SPEED         40000000
+#define CONFIG_SF_DEFAULT_MODE          SPI_MODE_0
 #define CONFIG_SYS_FSL_QSPI_LE
 #define CONFIG_SYS_FSL_QSPI_AHB
-#define FSL_QSPI_FLASH_SIZE		SZ_64M
+#define FSL_QSPI_FLASH_SIZE		SZ_32M
 #define FSL_QSPI_FLASH_NUM		1
 #endif
 
+
+#ifdef CONFIG_ENV_IS_IN_MMC
 #define CONFIG_ENV_OFFSET		(8 * SZ_64K)
-#define CONFIG_ENV_SIZE			SZ_8K
-#define CONFIG_ENV_IS_IN_MMC
+#elif defined(CONFIG_ENV_IS_IN_SPI_FLASH)
+#define CONFIG_ENV_OFFSET               (768 * 1024)
+#define CONFIG_ENV_SECT_SIZE            (64 * 1024)
+#define CONFIG_ENV_SPI_BUS              CONFIG_SF_DEFAULT_BUS
+#define CONFIG_ENV_SPI_CS               CONFIG_SF_DEFAULT_CS
+#define CONFIG_ENV_SPI_MODE             CONFIG_SF_DEFAULT_MODE
+#define CONFIG_ENV_SPI_MAX_HZ           CONFIG_SF_DEFAULT_SPEED
+#endif
+
 
 #define CONFIG_SYS_FSL_USDHC_NUM	1
+#ifdef CONFIG_ENV_IS_IN_MMC
 #define CONFIG_SYS_MMC_ENV_DEV		0  /*USDHC4*/
+#endif
 
-#endif				/* __CONFIG_H */
+
+#endif			/* __CONFIG_H */
