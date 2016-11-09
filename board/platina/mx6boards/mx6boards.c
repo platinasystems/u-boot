@@ -161,11 +161,12 @@ static struct i2c_pads_info i2c_pad_info2 = {
 	},
 };
 
+#ifdef CONFIG_I2C_PMIC_0
+#define I2C_PMIC        0
+#endif
+
 int power_init_board(void)
 {
-	return 0;
-#if 0
-/*** REC: REMOVE after BMC BOOT is done; only needed for lab board ***/
 	struct pmic *p;
 	unsigned int reg;
 	int ret;
@@ -183,7 +184,10 @@ int power_init_board(void)
 	reg &= ~LDO_VOL_MASK;
 	reg |= (LDOB_3_30V | (1 << LDO_EN));
 	pmic_reg_write(p, PFUZE100_VGEN5VOL, reg);
-#endif
+
+	/* Enable VCOIN and set it to 2.90V */
+        pmic_reg_write(p, 0x1A, 0x0B);
+	
 }
 
 #ifdef CONFIG_USB_EHCI_MX6
