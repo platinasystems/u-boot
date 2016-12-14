@@ -138,7 +138,7 @@
 #define CONFIG_SF_DEFAULT_MODE          SPI_MODE_0
 #define CONFIG_SYS_FSL_QSPI_LE
 #define CONFIG_SYS_FSL_QSPI_AHB
-#define FSL_QSPI_FLASH_SIZE		SZ_32M
+#define FSL_QSPI_FLASH_SIZE		SZ_64M
 #define FSL_QSPI_FLASH_NUM		1
 #endif
 
@@ -147,7 +147,7 @@
 #define CONFIG_ENV_OFFSET		(8 * SZ_64K)
 #elif defined(CONFIG_ENV_IS_IN_SPI_FLASH)
 #define CONFIG_ENV_OFFSET               (768 * 1024)
-#define CONFIG_ENV_SECT_SIZE            (64 * 1024)
+#define CONFIG_ENV_SECT_SIZE            SZ_256K
 #define CONFIG_ENV_SPI_BUS              CONFIG_SF_DEFAULT_BUS
 #define CONFIG_ENV_SPI_CS               CONFIG_SF_DEFAULT_CS
 #define CONFIG_ENV_SPI_MODE             CONFIG_SF_DEFAULT_MODE

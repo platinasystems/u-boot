@@ -170,6 +170,19 @@ int power_init_board(void)
 	struct pmic *p;
 	unsigned int reg;
 	int ret;
+	int i = 0;
+
+
+	/* 12/02/2016	*/
+	/* Wait for ALL_PWR_GOOD indication */
+	/* before proceeding since P3v3_i2C might not be up */
+	while( !gpio_get_value(IMX_GPIO_NR(4, 15)) ) {
+                mdelay(10); /* 10ms delay */
+                if( i++ >= 1000)
+                        break;
+	}
+	mdelay(50);
+		
 
 	p = pfuze_common_init(I2C_PMIC);
 	if (!p)
@@ -323,13 +336,13 @@ static iomux_v3_cfg_t const quadspi_pads[] = {
         MX6_PAD_QSPI1A_SCLK__QSPI1_A_SCLK      | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
         MX6_PAD_QSPI1A_SS0_B__QSPI1_A_SS0_B    | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
         MX6_PAD_QSPI1A_SS1_B__QSPI1_A_SS1_B    | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
-        MX6_PAD_QSPI1B_DATA0__QSPI1_B_DATA_0   | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
+  /*      MX6_PAD_QSPI1B_DATA0__QSPI1_B_DATA_0   | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
         MX6_PAD_QSPI1B_DATA1__QSPI1_B_DATA_1   | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
         MX6_PAD_QSPI1B_DATA2__QSPI1_B_DATA_2   | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
         MX6_PAD_QSPI1B_DATA3__QSPI1_B_DATA_3   | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
         MX6_PAD_QSPI1B_SCLK__QSPI1_B_SCLK      | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
         MX6_PAD_QSPI1B_SS0_B__QSPI1_B_SS0_B    | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
-        MX6_PAD_QSPI1B_SS1_B__QSPI1_B_SS1_B    | MUX_PAD_CTRL(QSPI_PAD_CTRL1),
+        MX6_PAD_QSPI1B_SS1_B__QSPI1_B_SS1_B    | MUX_PAD_CTRL(QSPI_PAD_CTRL1), */
 };
 
 int board_qspi_init(void)
@@ -348,6 +361,14 @@ int board_init(void)
 {
 	/* Address of boot parameters */
 	gd->bd->bi_boot_params = PHYS_SDRAM + 0x100;
+
+	/* 12/02/2016 */
+	/* Define QSPI Mux Control signals to avoid conflicts	*/
+	gpio_direction_input(IMX_GPIO_NR(4,30)); /* BMC_WDT_MUX_EN_L */
+    	gpio_direction_input(IMX_GPIO_NR(4,31)); /* QSPI_MUX_SEL */
+
+	gpio_direction_input(IMX_GPIO_NR(4,15)); /* ALL_PWR_GOOD */
+
 
 #ifdef CONFIG_SYS_I2C_MXC
 	/* i2c Bus 1 initiazation */
