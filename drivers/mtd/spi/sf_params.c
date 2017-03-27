@@ -51,6 +51,8 @@ const struct spi_flash_params spi_flash_params_table[] = {
 	{"MX25L25635F",	   0xc22019, 0x0,	64 * 1024,   512, RD_FULL,		     WR_QPP},
 	{"MX25L51235F",	   0xc2201a, 0x0,	64 * 1024,  1024, RD_FULL,		     WR_QPP},
 	{"MX25L12855E",	   0xc22618, 0x0,	64 * 1024,   256, RD_FULL,		     WR_QPP},
+	{"MX66U51235F",    0xc2253a, 0x0,	64 * 1024,  1024, RD_FULL,		     WR_QPP},
+	{"MX66L1G45G",     0xc2201b, 0x0,	64 * 1024,  2048, RD_FULL,		     WR_QPP},
 #endif
 #ifdef CONFIG_SPI_FLASH_SPANSION	/* SPANSION */
 	{"S25FL008A",	   0x010213, 0x0,	64 * 1024,    16, RD_NORM,			  0},
@@ -95,6 +97,8 @@ const struct spi_flash_params spi_flash_params_table[] = {
 	{"N25Q512A",	   0x20bb20, 0x0,       64 * 1024,  1024, RD_FULL, WR_QPP | E_FSR | SECT_4K},
 	{"N25Q1024",	   0x20ba21, 0x0,       64 * 1024,  2048, RD_FULL, WR_QPP | E_FSR | SECT_4K},
 	{"N25Q1024A",	   0x20bb21, 0x0,       64 * 1024,  2048, RD_FULL, WR_QPP | E_FSR | SECT_4K},
+	{"MT25QU02G",	   0x20bb22, 0x0,       64 * 1024,  4096, RD_FULL, WR_QPP | E_FSR | SECT_4K},
+	{"MT25QL02G",	   0x20ba22, 0x0,       64 * 1024,  4096, RD_FULL, WR_QPP | E_FSR | SECT_4K},
 #endif
 #ifdef CONFIG_SPI_FLASH_SST		/* SST */
 	{"SST25VF040B",	   0xbf258d, 0x0,	64 * 1024,     8, RD_NORM,          SECT_4K | SST_WR},
