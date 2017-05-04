@@ -37,6 +37,9 @@ obj-$(CONFIG_CMD_BOOTM) += cmd_bootm.o bootm.o bootm_os.o
 obj-y += cmd_help.o
 obj-y += cmd_version.o
 
+# Platina Specific
+obj-y += cmd_setmac.o
+
 # environment
 obj-y += env_attr.o
 obj-y += env_callback.o
