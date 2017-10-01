@@ -528,7 +528,7 @@ __weak int imx6_pcie_toggle_reset(void)
 	gpio_set_value(CONFIG_PCIE_IMX_PERST_GPIO, 1);
 	mdelay(20);
 #else
-	puts("WARNING: Make sure the PCIe #PERST line is connected!\n");
+	//puts("WARNING: Make sure the PCIe #PERST line is connected!\n");
 #endif
 	return 0;
 }
