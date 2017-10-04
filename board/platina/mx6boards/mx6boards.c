@@ -163,6 +163,8 @@ static struct i2c_pads_info i2c_pad_info2 = {
 
 #ifdef CONFIG_I2C_PMIC_0
 #define I2C_PMIC        0
+#else
+#define I2C_PMIC	1
 #endif
 
 int power_init_board(void)
