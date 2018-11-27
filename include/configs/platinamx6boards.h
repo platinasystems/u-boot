@@ -26,7 +26,46 @@
 #define CONFIG_MXC_UART
 #define CONFIG_MXC_UART_BASE		UART1_BASE
 
-#define CONFIG_EXTRA_ENV_SETTINGS
+#define CONFIG_EXTRA_ENV_SETTINGS \
+  "baudrate=115200\0" \
+  "bootargs=console=ttymxc0,115200n8 mem=1024m init=/init start ip=dhcp\0" \
+  "bootcmd=run readmac;sf probe 0;sf read ${fdt_addr} 0x00080000 ${sz_fdt};sf read ${loadaddr} 0x00100000 ${sz_kernel};sf read ${initrd_addr} 0x00300000 ${sz_initrd};bootz ${loadaddr} ${initrd_addr} ${fdt_addr}\0" \
+  "bootdelay=10\0" \
+  "dlbmc=mw.b 80800000 00 00600000;run dw_hdr;run dw_uboot;run dw_fdt;run dw_kernel;run dw_initrd\0" \
+  "dw_fdt=tftpboot 80880000 ${serverip}:platina-mk1-bmc.dtb;setenv sz_fdt ${filesize}\0" \
+  "dw_hdr=tftpboot 80800400 ${serverip}:qspi-header-sckl00;setenv sz_hdr ${filesize}\0" \
+  "dw_initrd=tftpboot 80B00000 ${serverip}:initrd.img.xz;setenv sz_initrd ${filesize}\0" \
+  "dw_kernel=tftpboot 80900000 ${serverip}:zImage;setenv sz_kernel ${filesize}\0" \
+  "dw_uboot=tftpboot 80801000 ${serverip}:u-boot.imx;setenv sz_uboot ${filesize}\0" \
+  "ethact=FEC\0" \
+  "ethprime=FEC\0" \
+  "fdt_addr=0x88000000\0" \
+  "fdt_high=0xffffffff\0" \
+  "fileaddr=80b00000\0" \
+  "filesize=1fa758\0" \
+  "gatewayip=192.168.101.1\0" \
+  "initrd_addr=0x89000000\0" \
+  "initrd_high=0xffffffff\0" \
+  "ipaddr=192.168.101.100\0" \
+  "loadaddr=0x82000000\0" \
+  "mask=255.255.255.0\0" \
+  "netmask=255.255.255.0\0" \
+  "qspi=sf probe;sf erase 0 00600000;sf erase fc0000 40000;sf write 80800000 0 00600000;saveenv\0" \
+  "qspi0=mw 020e01b8 00000005; mw 20a8004 c7000000; mw 020a8000 4300ca05\0" \
+  "qspi1=mw 020e01b8 00000005; mw 20a8004 c7000000; mw 020a8000 c300ca05\0" \
+  "readmac=i2c read 55 0.2 200 80800000; setmac 80800000 24; saveenv\0" \
+  "serverip=192.168.101.1\0" \
+  "stderr=serial\0" \
+  "stdin=serial\0" \
+  "stdout=serial\0" \
+  "sz_env=4000\0" \
+  "sz_fdt=f000\0" \
+  "sz_hdr=200\0" \
+  "sz_initrd=300000\0" \
+  "sz_kernel=200000\0" \
+  "sz_uboot=5b718\0" \
+  "wd=mw 020e01a0 00000005;mw 020e01a4 00000005;mw 020e01a8 00000005;mw 020e01b8 00000005;mw 020e01bc 00000005;mw 020a8000 0300ca05;mw 020a8004 07000000\0" \
+
 
 #define CONFIG_BOOTCOMMAND
 
