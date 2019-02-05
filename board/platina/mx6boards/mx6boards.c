@@ -13,20 +13,18 @@
 #include <asm/arch/mx6-pins.h>
 #include <asm/arch/sys_proto.h>
 #include <asm/gpio.h>
-#include <asm/imx-common/iomux-v3.h>
 #include <asm/io.h>
-#include <asm/imx-common/mxc_i2c.h>
 #include <linux/sizes.h>
 #include <common.h>
 #include <fsl_esdhc.h>
 #include <mmc.h>
+#include <asm/mach-imx/mxc_i2c.h>
 #include <i2c.h>
 #include <miiphy.h>
 #include <netdev.h>
 #include <power/pmic.h>
 #include <power/pfuze100_pmic.h>
 #include "../../freescale/common/pfuze.h"
-#include <usb.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 

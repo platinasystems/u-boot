@@ -32,7 +32,7 @@ static int do_setmac(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 		}
 		memaddr++;
 	}
-	setenv("ethaddr", ethaddr);
+	env_set("ethaddr", ethaddr);
 	return 0;
 }
 
