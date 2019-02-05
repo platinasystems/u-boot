@@ -424,6 +424,10 @@ config TARGET_LITEBOARD
 	select BOARD_LATE_INIT
 	select MX6UL_LITESOM
 
+config TARGET_LITEBOARD
+	bool "Grinn liteBoard (i.MX6UL)"
+	select LITESOM
+
 config TARGET_PLATINAMX6BOARDS
 	bool "platinamx6boards"
 	select DM
