@@ -121,7 +121,6 @@
 #define CONFIG_ETHPRIME                 "FEC"
 
 /* USB Configs */
-#define CONFIG_CMD_USB
 #ifdef CONFIG_CMD_USB
 #define CONFIG_USB_EHCI
 #define CONFIG_USB_EHCI_MX6
