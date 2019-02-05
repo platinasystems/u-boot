@@ -27,7 +27,6 @@
 #include <power/pfuze100_pmic.h>
 #include "../../freescale/common/pfuze.h"
 #include <usb.h>
-#include <usb/ehci-fsl.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
