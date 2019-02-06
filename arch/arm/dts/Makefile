@@ -651,6 +651,8 @@ dtb-$(CONFIG_SOC_KEYSTONE) += keystone-k2hk-evm.dtb \
 
 dtb-$(CONFIG_TARGET_AT91SAM9261EK) += at91sam9261ek.dtb
 
+dtb-$(CONFIG_TARGET_PLATINAMX6BOARDS) += platina-mk1-bmc.dtb
+
 dtb-$(CONFIG_TARGET_PM9261) += at91sam9261ek.dtb
 
 dtb-$(CONFIG_TARGET_PM9263) += at91sam9263ek.dtb
