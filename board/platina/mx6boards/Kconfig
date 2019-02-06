@@ -1,0 +1,18 @@
+if TARGET_PLATINAMX6BOARDS
+
+config SYS_BOARD
+	default "mx6boards"
+
+config SYS_VENDOR
+	default "platina"
+
+config SYS_CONFIG_NAME
+	default "platinamx6boards"
+
+config I2C_PMIC_0
+       bool
+
+config SYS_BOOT_QSPI
+       bool
+
+endif
