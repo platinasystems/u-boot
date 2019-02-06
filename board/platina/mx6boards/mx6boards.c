@@ -309,12 +309,13 @@ int board_mmc_init(bd_t *bis)
 				"(%d) than supported by the board\n", i + 1);
 			return -EINVAL;
 		}
-
+#ifdef CONFIG_FSL_ESDHC
 		ret = fsl_esdhc_initialize(bis, &usdhc_cfg[i]);
 		if (ret) {
 			printf("Warning: failed to initialize mmc dev %d\n", i);
 			return ret;
 		}
+#endif
 	}
 	return 0;
 }
