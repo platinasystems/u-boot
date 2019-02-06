@@ -92,8 +92,9 @@
 			reg = <0x00000000 0x00080000>;
 		};
 
-		dtb@40000 {		/* Legacy */
+		dtb@80000 {		/* Legacy */
 			label = "dtb";
+			reg = <0x00080000 0x00040000>;
 		};
 
 		env@c0000 {
@@ -102,8 +103,8 @@
 		};
 
 		ker@10000 {		/* Legacy */
-			  label = "ker";
-			  reg = <0x00100000 0x00300000>;
+			  label = "kernel";
+			  reg = <0x00100000 0x00200000>;
 		};
 
 		itb@10000 {
@@ -112,13 +113,13 @@
 		};
 			
 		ini@30000 {		/* Legacy */
-			label = "ini";
+			label = "initramfs";
 			reg = <0x00300000 0x00300000>;
 		};
 
-		ubi@11000 {
+		ubi@90000 {
 			  label = "ubi";
-			  reg = <0x0090000 0x00ef0000>;
+			  reg = <0x00900000 0x00680000>;
 		};
 		
 		per@f80000 {
