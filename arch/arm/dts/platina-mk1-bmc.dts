@@ -74,7 +74,7 @@
        pinctrl-names = "default";
        pinctrl-0 = <&pinctrl_qspi1>;
        status = "okay";
-
+       num-cs = <1>;
 	ddrsmp = <0>;		/* DDR internal Sampling */
 
        flash10: s25fl256s1@0 {
