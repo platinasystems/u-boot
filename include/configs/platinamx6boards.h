@@ -152,14 +152,9 @@
 
 
 /* adding SF commands */
-#define CONFIG_FSL_QSPI
-
 
 #ifdef CONFIG_FSL_QSPI
 #define CONFIG_CMD_SF
-#define CONFIG_SPI_FLASH_SPANSION
-#define CONFIG_SPI_FLASH_STMICRO
-#define CONFIG_SPI_FLASH_MACRONIX
 #define CONFIG_SF_DEFAULT_BUS           0
 #define CONFIG_SF_DEFAULT_CS            0
 #define CONFIG_SF_DEFAULT_SPEED         40000000
