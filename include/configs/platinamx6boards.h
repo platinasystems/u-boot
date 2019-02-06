@@ -152,14 +152,6 @@
 #define CONFIG_ENV_SIZE                 SZ_8K
 
 
-/* QSPI or MMC */
-#ifdef CONFIG_SYS_BOOT_QSPI
-#define CONFIG_ENV_IS_IN_SPI_FLASH
-#else
-#define CONFIG_ENV_IS_IN_MMC
-#endif
-
-
 /* adding SF commands */
 #define CONFIG_FSL_QSPI
 
