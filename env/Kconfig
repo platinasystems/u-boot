@@ -460,6 +460,8 @@ config ENV_SECT_SIZE
 	help
 	  Size of the sector containing the environment.
 
+endif
+
 config ENV_UBI_PART
 	string "UBI partition name"
 	depends on ENV_IS_IN_UBI
@@ -471,8 +473,6 @@ config ENV_UBI_VOLUME
 	depends on ENV_IS_IN_UBI
 	help
 	  Name of the volume that you want to store the environment in.
-
-endif
 
 config USE_DEFAULT_ENV_FILE
 	bool "Create default environment from file"
