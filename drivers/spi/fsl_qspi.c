@@ -573,6 +573,8 @@ static void fsl_qspi_fill_txfifo(struct fsl_qspi *q,
 		for (i = op->data.nbytes; i < 16; i += 4)
 			qspi_writel(q, 0, base + QUADSPI_TBDR);
 	}
+
+	udelay(250);
 }
 
 static void fsl_qspi_read_rxfifo(struct fsl_qspi *q,
