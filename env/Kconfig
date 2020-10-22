@@ -547,8 +547,6 @@ config ENV_SECT_SIZE
 	help
 	  Size of the sector containing the environment.
 
-endif
-
 config ENV_UBI_PART
 	string "UBI partition name"
 	depends on ENV_IS_IN_UBI

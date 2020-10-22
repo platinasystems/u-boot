@@ -24,6 +24,9 @@
 		reg = <0x80000000 0x40000000>;
 	};
 
+	aliases {
+		spi0 = &qspi1;
+	};
 };
 
 &fec1 {
@@ -80,7 +83,7 @@
        flash10: s25fl256s1@0 {
 		#address-cells = <1>;
 		#size-cells = <1>;
-		compatible = "spansion,s25fl256s1";
+		compatible = "spansion,s25fl256s1", "jedec,spi-nor";
 		spi-max-frequency = <29000000>;
 		reg = <0>;
 		all@0 {

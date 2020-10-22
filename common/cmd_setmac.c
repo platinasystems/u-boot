@@ -7,7 +7,7 @@
 #include <common.h>
 #include <command.h>
 
-static int do_setmac(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+static int do_setmac(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[])
 {
 	int i;
 	char *memaddr;

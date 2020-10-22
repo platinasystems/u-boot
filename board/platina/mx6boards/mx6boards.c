@@ -12,6 +12,7 @@
 #include <asm/arch/imx-regs.h>
 #include <asm/arch/mx6-pins.h>
 #include <asm/arch/sys_proto.h>
+#include <exports.h>
 #include <asm/gpio.h>
 #include <asm/io.h>
 #include <linux/sizes.h>
@@ -67,11 +68,6 @@ static iomux_v3_cfg_t const uart1_pads[] = {
 	MX6_PAD_GPIO1_IO05__UART1_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
 };
 
-static iomux_v3_cfg_t const uart2_pads[] = {
-	MX6_PAD_GPIO1_IO06__UART2_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
-	MX6_PAD_GPIO1_IO07__UART2_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
-};
-
 static iomux_v3_cfg_t const usdhc4_pads[] = {
 	MX6_PAD_SD4_CLK__USDHC4_CLK | MUX_PAD_CTRL(USDHC_PAD_CTRL),
 	MX6_PAD_SD4_CMD__USDHC4_CMD | MUX_PAD_CTRL(USDHC_PAD_CTRL),
@@ -120,7 +116,7 @@ static int setup_fec(void)
 	return enable_fec_anatop_clock(0, ENET_125MHZ);
 }
 
-int board_eth_init(bd_t *bis)
+int board_eth_init(struct bd_info *bis)
 {
 	imx_iomux_v3_setup_multiple_pads(fec1_pads, ARRAY_SIZE(fec1_pads));
 	setup_fec();
@@ -199,7 +195,8 @@ int power_init_board(void)
 
 	/* Enable VCOIN and set it to 2.90V */
         pmic_reg_write(p, 0x1A, 0x0B);
-	
+
+	return 0;
 }
 
 #ifdef CONFIG_USB_EHCI_MX6
@@ -293,9 +290,12 @@ int board_mmc_getcd(struct mmc *mmc)
 	return ret;
 }
 
-int board_mmc_init(bd_t *bis)
+int board_mmc_init(struct bd_info *bis)
 {
-	int i, ret;
+	int i;
+#ifdef CONFIG_FSL_ESDHC
+	int ret;
+#endif /* CONFIG_FSL_ESDHC */
 
 	for (i = 0; i < CONFIG_SYS_FSL_USDHC_NUM; i++) {
 		switch (i) {
