@@ -34,9 +34,21 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_enet1>;
 	phy-mode = "rgmii";
+	phy-handle = <&ethphy1>;
+	phy-reset-gpios = <&gpio3 25 GPIO_ACTIVE_LOW>;
+	phy-reset-post-delay = <500>;
 	fixed-link {
 	      speed = <1000>;
 	      full-duplex;
+	};
+	mdio {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		ethphy1: ethernet-phy@1 {
+			reg = <1>;
+			compatible = "ethernet-phy-ieee802.3-c22";
+		};
 	};
 };
 
@@ -439,6 +451,7 @@
 	status = "disabled";		/* not used */
 };
 
+/*
 &gpio1 {
 	HOST_TO_BMC_INT_L@8 {
 		gpio-pin-desc;
@@ -652,3 +665,4 @@
 		output-high;
 	};
 };	
+*/

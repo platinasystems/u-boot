@@ -116,14 +116,6 @@ static int setup_fec(void)
 	return enable_fec_anatop_clock(0, ENET_125MHZ);
 }
 
-int board_eth_init(struct bd_info *bis)
-{
-	imx_iomux_v3_setup_multiple_pads(fec1_pads, ARRAY_SIZE(fec1_pads));
-	setup_fec();
-	udelay(500);
-	return cpu_eth_init(bis);
-}
-
 #define PC MUX_PAD_CTRL(I2C_PAD_CTRL)
 
 /* i2c Bus 1 (1-based) info */
@@ -242,25 +234,6 @@ int board_ehci_hcd_init(int port)
 }
 #endif
 
-int board_phy_config(struct phy_device *phydev)
-{
-	/*
-	 * Enable 1.8V(SEL_1P5_1P8_POS_REG) on
-	 * Phy control debug reg 0
-	 */
-	phy_write(phydev, MDIO_DEVAD_NONE, 0x1d, 0x1f);
-	phy_write(phydev, MDIO_DEVAD_NONE, 0x1e, 0x8);
-
-	/* rgmii tx clock delay enable */
-	phy_write(phydev, MDIO_DEVAD_NONE, 0x1d, 0x05);
-	phy_write(phydev, MDIO_DEVAD_NONE, 0x1e, 0x100);
-
-	if (phydev->drv->config)
-		phydev->drv->config(phydev);
-
-	return 0;
-}
-
 int board_early_init_f(void)
 {
 	setup_iomux_uart();
@@ -364,9 +337,12 @@ int board_init(void)
 
 	/* 12/02/2016 */
 	/* Define QSPI Mux Control signals to avoid conflicts	*/
+	gpio_request(IMX_GPIO_NR(4,30), "bmc_wdt_mux_en_l");
 	gpio_direction_input(IMX_GPIO_NR(4,30)); /* BMC_WDT_MUX_EN_L */
+	gpio_request(IMX_GPIO_NR(4,31), "qspi_mux_sel");
     	gpio_direction_input(IMX_GPIO_NR(4,31)); /* QSPI_MUX_SEL */
 
+	gpio_request(IMX_GPIO_NR(4,15), "all_pwr_good");
 	gpio_direction_input(IMX_GPIO_NR(4,15)); /* ALL_PWR_GOOD */
 
 
@@ -378,14 +354,20 @@ int board_init(void)
 	setup_i2c(1, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info2);
 
 	/* MAIN_I2C_MUX_RST_L = 1 */
-	 gpio_direction_output(IMX_GPIO_NR(6,8), 1); 
+	gpio_request(IMX_GPIO_NR(6,8), "main_i2c_mux_rst_l");
+	gpio_direction_output(IMX_GPIO_NR(6,8), 1); 
 #endif
 
 #ifdef CONFIG_FSL_QSPI
 	board_qspi_init();
+	gpio_request(IMX_GPIO_NR(6,21), "reset_qspi");
 	gpio_direction_output(IMX_GPIO_NR(6,21), 1); /* unreset qspi */
 #endif
 
+	imx_iomux_v3_setup_multiple_pads(fec1_pads, ARRAY_SIZE(fec1_pads));
+	setup_fec();
+	udelay(500);
+	
 	return 0;
 }
 
